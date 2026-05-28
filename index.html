@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Diseño y Fabricación Digital | Prof. Diego Sequeira</title>
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: radial-gradient(circle at 10% 20%, #0a0f2a, #03060f);
+      font-family: 'Inter', sans-serif;
+      color: #f0f4ff;
+      scroll-behavior: smooth;
+    }
+    :root {
+      --cyan: #00f2fe;
+      --green: #1effbc;
+      --yellow: #ffdd44;
+      --pink: #ff66c4;
+      --purple: #b77cff;
+      --panel: rgba(15, 25, 45, 0.75);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 0 24px; }
+    .hero {
+      text-align: center;
+      padding: 80px 20px 60px;
+      background: radial-gradient(ellipse at 50% 0%, rgba(0,242,254,0.15), transparent);
+    }
+    h1 {
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #ffffff, var(--cyan), var(--green));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+    }
+    .subhero { font-size: 1.2rem; color: #b9c8ff; max-width: 700px; margin: 0 auto 20px; }
+    .teacher-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(0,242,254,0.12);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(0,242,254,0.3);
+      border-radius: 100px;
+      padding: 10px 24px;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+    .teacher-badge i { color: var(--cyan); font-size: 1.3rem; }
+    .nav-sticky {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(3, 10, 22, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 12px 0;
+    }
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+    .nav-links a {
+      color: #eef5ff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 40px;
+      transition: 0.2s;
+      font-size: 0.9rem;
+    }
+    .nav-links a:hover { background: var(--cyan); color: #0a0f2a; box-shadow: 0 0 8px var(--cyan); }
+    section { margin: 70px 0; }
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      display: inline-block;
+      background: linear-gradient(120deg, #fff, var(--cyan));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .credit-line {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      color: var(--green);
+      margin-bottom: 30px;
+      border-left: 3px solid var(--green);
+      padding-left: 16px;
+      font-weight: 500;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+    .card-glow {
+      background: var(--panel);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 32px;
+      padding: 24px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card-glow:hover { transform: translateY(-6px); border-color: var(--cyan); box-shadow: 0 20px 35px -12px rgba(0,242,254,0.2); }
+    .step-list { counter-reset: step-counter; list-style: none; }
+    .step-list li {
+      counter-increment: step-counter;
+      margin-bottom: 28px;
+      position: relative;
+      padding-left: 58px;
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+    .step-list li::before {
+      content: counter(step-counter);
+      position: absolute;
+      left: 0;
+      top: -4px;
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(145deg, var(--cyan), #0077ff);
+      border-radius: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: #03060f;
+    }
+    .flashcard-wrapper, .quiz-wrapper {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    .flashcard {
+      width: 280px;
+      height: 320px;
+      perspective: 1200px;
+      cursor: pointer;
+    }
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      transform-style: preserve-3d;
+      border-radius: 28px;
+    }
+    .flashcard.flipped .flip-card-inner { transform: rotateY(180deg); }
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 28px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: linear-gradient(145deg, #131f3a, #0b1124);
+      border: 1px solid rgba(0,242,254,0.3);
+      box-shadow: 0 15px 30px -10px rgba(0,0,0,0.5);
+    }
+    .card-front { background: linear-gradient(135deg, #101b30, #071123); text-align: center; }
+    .card-back {
+      transform: rotateY(180deg);
+      background: linear-gradient(135deg, #0a2c2a, #032b2b);
+      text-align: center;
+      justify-content: center;
+      font-weight: 500;
+    }
+    /* Estilos para las preguntas de autoevaluación */
+    .quiz-card {
+      background: linear-gradient(145deg, #131f3a, #0b1124);
+      border: 1px solid rgba(0,242,254,0.3);
+      border-radius: 28px;
+      padding: 24px;
+      width: 100%;
+      max-width: 500px;
+      transition: 0.2s;
+    }
+    .quiz-question {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--cyan);
+    }
+    .quiz-option {
+      background: rgba(255,255,255,0.05);
+      border-radius: 60px;
+      padding: 12px 18px;
+      margin: 8px 0;
+      cursor: pointer;
+      transition: 0.15s;
+      border: 1px solid transparent;
+    }
+    .quiz-option:hover { background: rgba(0,242,254,0.2); border-color: var(--cyan); }
+    .quiz-feedback {
+      margin-top: 16px;
+      font-size: 0.9rem;
+      padding: 10px;
+      border-radius: 20px;
+      background: rgba(0,0,0,0.4);
+    }
+    .correct-feedback { color: var(--green); border-left: 3px solid var(--green); padding-left: 12px; }
+    .wrong-feedback { color: #ffaa88; border-left: 3px solid #ffaa88; padding-left: 12px; }
+    .btn-reset-quiz {
+      background: linear-gradient(95deg, var(--cyan), #2b6eff);
+      border: none;
+      color: #030917;
+      font-weight: bold;
+      padding: 12px 28px;
+      border-radius: 48px;
+      cursor: pointer;
+      margin-top: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+    .video-card {
+      background: rgba(0,0,0,0.4);
+      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .video-card iframe,
+    .video-card video {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: none;
+      display: block;
+      background: #000;
+    }
+    .video-caption {
+      padding: 16px 18px 18px;
+      color: #dce8ff;
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+    .video-caption strong { color: var(--cyan); display: block; margin-bottom: 5px; }
+    .btn-download {
+      background: linear-gradient(95deg, var(--cyan), #2b6eff);
+      border: none;
+      color: #030917;
+      font-weight: bold;
+      padding: 12px 24px;
+      border-radius: 48px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-download:hover { transform: scale(1.02); box-shadow: 0 0 12px var(--cyan); }
+    .pdf-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-top: 25px;
+    }
+    .pdf-item {
+      background: rgba(255,255,255,0.05);
+      border-radius: 24px;
+      padding: 18px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 15px;
+      border-left: 5px solid var(--yellow);
+    }
+    .pdf-info { display: flex; align-items: center; gap: 15px; }
+    .pdf-info i { font-size: 2rem; color: var(--cyan); }
+    .pdf-name { font-weight: 600; font-size: 1rem; }
+    .download-pdf-btn {
+      background: rgba(0,242,254,0.2);
+      border: 1px solid var(--cyan);
+      padding: 8px 18px;
+      border-radius: 40px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .download-pdf-btn:hover { background: var(--cyan); color: #030917; }
+    .single-video {
+      margin: 20px 0;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+      border: 1px solid rgba(0,242,254,0.4);
+    }
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 40px 24px;
+      text-align: center;
+      margin-top: 70px;
+    }
+    @media (max-width: 680px) {
+      .container { padding: 0 16px; }
+      .step-list li { padding-left: 48px; }
+      .pdf-item { flex-direction: column; align-items: flex-start; }
+      .quiz-card { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <h1>DISEÑO Y FABRICACIÓN DIGITAL</h1>
+    <p class="subhero">Modelado 3D · Bambu Studio · Impresión Aditiva · Calibración profesional</p>
+    <div class="teacher-badge">
+      <i class="fas fa-chalkboard-user"></i>
+      <span>Prof. Diego Sequeira · Contacto: 1160500515</span>
+      <i class="fas fa-print"></i>
+    </div>
+  </div>
+</div>
+
+<div class="nav-sticky">
+  <div class="container">
+    <div class="nav-links">
+      <a href="#fundamentos"><i class="fas fa-cube"></i> Fundamentos</a>
+      <a href="#bambu-studio"><i class="fas fa-laptop-code"></i> Bambu Studio</a>
+      <a href="#paso-soporte"><i class="fas fa-hand-fist"></i> Soporte Manija</a>
+      <a href="#nuevo-video"><i class="fas fa-video"></i> Tutorial extra</a>
+      <a href="#calibracion"><i class="fas fa-chart-line"></i> Calibración</a>
+      <a href="#flashcards"><i class="fas fa-layer-group"></i> Conceptos</a>
+      <a href="#autoevaluacion"><i class="fas fa-check-circle"></i> Autoevaluación</a>
+      <a href="#videos"><i class="fab fa-youtube"></i> Videoteca</a>
+      <a href="#descargas"><i class="fas fa-download"></i> PDFs curso</a>
+    </div>
+  </div>
+</div>
+
+<main class="container">
+  <!-- Fundamentos -->
+  <section id="fundamentos">
+    <h2 class="section-title">Fundamentos de fabricación aditiva</h2>
+    <div class="credit-line"><i class="fas fa-id-card"></i> Prof. Diego Sequeira · 1160500515 · Especialista en impresión 3D</div>
+    <div class="card-grid">
+      <div class="card-glow"><i class="fas fa-layer-group" style="font-size: 2.2rem; color: var(--cyan);"></i><h3 style="margin: 15px 0 8px;">FDM / Modelado por deposición</h3><p>Construcción capa por capa usando termoplásticos como PLA, ABS, PETG, TPU. Tecnología más accesible para prototipado rápido.</p></div>
+      <div class="card-glow"><i class="fas fa-microchip" style="font-size: 2.2rem; color: var(--green);"></i><h3 style="margin: 15px 0 8px;">Flujo digital completo</h3><p>Modelo CAD → Exportar STL/3MF → Laminado (Bambu Studio/Cura) → G-code → Impresión 3D. Importancia del formato .3MF.</p></div>
+      <div class="card-glow"><i class="fas fa-chart-simple" style="font-size: 2.2rem; color: var(--yellow);"></i><h3 style="margin: 15px 0 8px;">Parámetros críticos</h3><p>Altura de capa (0.2mm), paredes ≥3, relleno ≤30%, temperatura según material, enfriamiento activo.</p></div>
+    </div>
+  </section>
+
+  <!-- Bambu Studio esencial -->
+  <section id="bambu-studio">
+    <h2 class="section-title">Dominio de Bambu Studio + A1 Combo</h2>
+    <div class="credit-line"><i class="fas fa-id-card"></i> Prof. Diego Sequeira · 1160500515 · Slicer avanzado</div>
+    <div class="card-grid">
+      <div class="card-glow"><i class="fas fa-cogs"></i><h3>Configuración inicial</h3><p>Seleccionar impresora (Bambu Lab A1), boquilla 0.4mm, tipo de placa, filamento (PLA/PETG/ABS).</p></div>
+      <div class="card-glow"><i class="fas fa-ruler-combined"></i><h3>Altura de capa y resistencias</h3><p>0.20mm estándar. Priorizar contornos (4 paredes) sobre relleno. Costuras tipo “scarf seam”.</p></div>
+      <div class="card-glow"><i class="fas fa-chart-line"></i><h3>Calibración de caudal</h3><p>Usar calibración manual o automática (Micro-Lidar). Ajustar multiplicador de flujo. Filamento seco = éxito.</p></div>
+    </div>
+  </section>
+
+  <!-- SOPORTE MANIJA DEL CHOP (PASO A PASO) -->
+  <section id="paso-soporte">
+    <h2 class="section-title">🛠️ Paso a paso: Soportes para la Manija del Chop en Bambu Studio</h2>
+    <div class="credit-line"><i class="fas fa-tools"></i> Prof. Diego Sequeira · 1160500515 · optimización de geometrías complejas</div>
+    <div class="card-glow" style="margin-bottom: 30px;"><p><strong>Objetivo:</strong> Garantizar que la manija (chop handle) se imprima sin desprendimientos, con voladizos bien soportados.</p></div>
+    <ul class="step-list">
+      <li><strong>Importar modelo:</strong> Abrir Bambu Studio → Nuevo proyecto → arrastrar archivo .3mf o .stl.</li>
+      <li><strong>Orientar la pieza:</strong> Usar “Rotate” para apoyar la cara más plana, reducir voladizos.</li>
+      <li><strong>Activar soportes:</strong> Marcar “Enable Support”. Elegir “Tree (Auto)” para curvas.</li>
+      <li><strong>Ajustar densidad:</strong> Support density al 18-22% en zonas de agarre.</li>
+      <li><strong>Reducir ángulo umbral:</strong> De 30°-40° a 25°-30°.</li>
+      <li><strong>Mejorar interfaz:</strong> Activar “Support interface” con densidad 70-80%.</li>
+      <li><strong>Distancia Z:</strong> 0.2-0.28mm para fácil remoción.</li>
+      <li><strong>Pintado manual:</strong> Usar “Paint-on supports” en cavidades inferiores.</li>
+      <li><strong>Previsualizar:</strong> “Slice” y revisar en “Preview” zonas sin soporte.</li>
+      <li><strong>Envío:</strong> Monitorear primeras capas, optimizar puentes.</li>
+    </ul>
+    <div style="background: rgba(0,242,254,0.1); border-radius: 24px; padding: 20px; margin-top: 20px;">
+      <i class="fas fa-lightbulb" style="color: var(--yellow);"></i> <strong>Consejo:</strong> Registra parámetros y usa “Support Blocker” para excluir zonas no críticas.
+    </div>
+  </section>
+
+  <!-- VIDEO ADICIONAL -->
+  <section id="nuevo-video">
+    <h2 class="section-title">🎬 Tutorial adicional: Técnicas avanzadas</h2>
+    <div class="credit-line"><i class="fab fa-youtube"></i> Prof. Diego Sequeira · 1160500515</div>
+    <div class="card-glow">
+      <div class="single-video">
+        <iframe width="100%" height="450" src="https://www.youtube.com/embed/hCa_cfJB8Pk" title="Tutorial adicional" frameborder="0" allowfullscreen></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Calibración -->
+  <section id="calibracion">
+    <h2 class="section-title">Calibración sistemática y resolución de problemas</h2>
+    <div class="credit-line"><i class="fas fa-id-card"></i> Prof. Diego Sequeira · 1160500515</div>
+    <div class="card-grid">
+      <div class="card-glow"><i class="fas fa-thermometer-half"></i><h3>Torre de temperatura</h3><p>Identifica rango óptimo de fusión por filamento.</p></div>
+      <div class="card-glow"><i class="fas fa-droplet"></i><h3>Prueba de flujo y humedad</h3><p>Filamento húmedo genera stringing. Secado mínimo 12h.</p></div>
+      <div class="card-glow"><i class="fas fa-arrows-spin"></i><h3>Retracción</h3><p>Extrusor directo: 0.2-1.5mm · Bowden: 3-6mm.</p></div>
+      <div class="card-glow"><i class="fas fa-chart-simple"></i><h3>Velocidad volumétrica máxima</h3><p>Límite de mm³/s del hotend, crítico en alta velocidad.</p></div>
+    </div>
+  </section>
+
+  <!-- FLASHCARDS CONCEPTOS -->
+  <section id="flashcards">
+    <h2 class="section-title">Tarjetas interactivas · Conceptos clave</h2>
+    <div class="credit-line"><i class="fas fa-id-card"></i> Prof. Diego Sequeira · 1160500515</div>
+    <div style="display: flex; gap: 16px; margin-bottom: 30px; flex-wrap: wrap;">
+      <button id="shuffleCardsBtn" class="btn-download" style="background: #2c3e66;"><i class="fas fa-random"></i> Mezclar tarjetas</button>
+      <button id="resetCardsBtn" class="btn-download" style="background: #2c3e66;"><i class="fas fa-undo-alt"></i> Reiniciar volteo</button>
+    </div>
+    <div id="flashcardsContainer" class="flashcard-wrapper"></div>
+  </section>
+
+  <!-- NUEVA SECCIÓN AUTOEVALUACIÓN con preguntas de los PDFs -->
+  <section id="autoevaluacion">
+    <h2 class="section-title">📝 Autoevaluación interactiva · Evaluaciones del curso</h2>
+    <div class="credit-line"><i class="fas fa-id-card"></i> Prof. Diego Sequeira · 1160500515 · Pon a prueba tus conocimientos</div>
+    <div class="card-glow" style="margin-bottom: 20px;">
+      <p><i class="fas fa-question-circle"></i> Estas preguntas han sido extraídas de las evaluaciones de "Modelado Poligonal 3D" y "Operación de Impresora 3D". Selecciona una opción y descubre si es correcta. Al finalizar, puedes reiniciar las respuestas.</p>
+    </div>
+    <div id="quizContainer" class="quiz-wrapper" style="flex-direction: column; align-items: center;"></div>
+    <div style="text-align: center;">
+      <button id="resetQuizBtn" class="btn-reset-quiz"><i class="fas fa-sync-alt"></i> Reiniciar autoevaluación</button>
+    </div>
+  </section>
+
+  <!-- VIDEOTECA CON VIDEOS PROPIOS Y ENLACES ORIGINALES -->
+  <section id="videos">
+    <h2 class="section-title">Videoteca profesional · Tutoriales 3D</h2>
+    <div class="credit-line"><i class="fas fa-video"></i> Prof. Diego Sequeira · 1160500515 · videos propios del curso</div>
+
+    <div class="card-glow" style="margin-bottom: 26px;">
+      <p><i class="fas fa-circle-play"></i> En esta sección se incorporan videos propios para acompañar el paso a paso de Bambu Studio, el diseño de llaveros y las pruebas con Bambu Lab.</p>
+    </div>
+
+    <h3 style="margin: 10px 0 18px; color: var(--green); font-size: 1.4rem;">Videos incorporados al material</h3>
+    <div class="video-grid">
+      <div class="video-card">
+        <video controls preload="metadata">
+          <source src="assets/videos/tutorial-bambu-studio.mp4" type="video/mp4">
+          Tu navegador no permite reproducir este video.
+        </video>
+        <div class="video-caption"><strong>Tutorial para Bambu Studio</strong>Guía visual para trabajar con el software Bambu Studio dentro del flujo de fabricación digital.</div>
+      </div>
+      <div class="video-card">
+        <video controls preload="metadata">
+          <source src="assets/videos/llaveros.mp4" type="video/mp4">
+          Tu navegador no permite reproducir este video.
+        </video>
+        <div class="video-caption"><strong>Diseño e impresión de llaveros</strong>Ejemplo práctico para aplicar modelado, laminado y fabricación de una pieza funcional.</div>
+      </div>
+      <div class="video-card">
+        <video controls preload="metadata">
+          <source src="assets/videos/test-bambulab.mp4" type="video/mp4">
+          Tu navegador no permite reproducir este video.
+        </video>
+        <div class="video-caption"><strong>Test Bambu Lab</strong>Prueba de funcionamiento y observación del proceso de impresión para análisis técnico.</div>
+      </div>
+    </div>
+
+    <h3 style="margin: 36px 0 18px; color: var(--yellow); font-size: 1.4rem;">Tutoriales complementarios de YouTube</h3>
+    <div class="video-grid">
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/MdcERWJaRjg" allowfullscreen></iframe></div>
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/cuFlFjTZq5Q" allowfullscreen></iframe></div>
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/_HTaSz1aFQo" allowfullscreen></iframe></div>
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/VzlhFHRz-TA" allowfullscreen></iframe></div>
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/FnCZhqIXdx4" allowfullscreen></iframe></div>
+      <div class="video-card"><iframe src="https://www.youtube.com/embed/QYURpyBzHpI" allowfullscreen></iframe></div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN DESCARGA PDFs -->
+  <section id="descargas">
+    <h2 class="section-title">📚 Material descargable · Todos los PDF del curso</h2>
+    <div class="credit-line"><i class="fas fa-file-pdf"></i> Prof. Diego Sequeira · 1160500515</div>
+    <div class="card-glow" style="margin-bottom: 20px;">
+      <p><i class="fas fa-info-circle"></i> Los archivos deben estar ubicados en la carpeta <strong>assets/pdfs/</strong> dentro del mismo directorio.</p>
+    </div>
+    <div class="pdf-list" id="pdfListContainer"></div>
+  </section>
+</main>
+
+<footer>
+  <i class="fas fa-cube"></i> Diseño y Fabricación Digital · Material didáctico interactivo · Docente: Diego Sequeira · contacto: 1160500515<br>
+  Todos los recursos basados en guías oficiales de Bambu Lab, Ultimaker Cura y estándares de impresión 3D.
+</footer>
+
+<script>
+  // ---------------------- DATOS AUTOEVALUACIÓN (extraídos de los PDFs) ----------------------
+  const quizQuestions = [
+    { text: "¿Qué describe mejor un modelo poligonal 3D?", options: ["Imagen 2D de píxeles", "Representación 3D con vértices, aristas y caras", "Archivo de texto con instrucciones de impresión", "Objeto físico de impresora 3D"], correct: 1 },
+    { text: "¿Cuál NO es un método de modelado 3D?", options: ["Modelado poligonal", "Esculpido digital", "CAD paramétrico", "Fotocopiado 2D"], correct: 3 },
+    { text: "Navegación correcta en Blender:", options: ["Girar rueda, mover Shift+rueda, zoom clic derecho", "Girar clic medio, mover Shift+clic medio, zoom rueda", "Girar clic izquierdo, mover Alt+clic izquierdo", "Girar Ctrl+clic derecho, mover clic derecho"], correct: 1 },
+    { text: "Elementos básicos de una malla poligonal:", options: ["Puntos, sombras y texturas", "Vértices, aristas y caras", "Capas, nodos y materiales", "Líneas, curvas y NURBS"], correct: 1 },
+    { text: "¿Para qué sirve Extrude en modelado poligonal?", options: ["Borrar geometría", "Duplicar objeto", "Generar nueva geometría a partir de cara/arista/vértice", "Aplicar materiales"], correct: 2 },
+    { text: "Funcionamiento de Tinkercad:", options: ["Software profesional de topología avanzada", "Combinar sólidos básicos con operaciones simples", "Solo animación y simulación física", "Requiere programación avanzada"], correct: 1 },
+    { text: "Operación booleana que resta un objeto de otro:", options: ["Union", "Intersect", "Difference", "Merge"], correct: 2 },
+    { text: "¿Para qué se usa una curva en Blender en modelado poligonal?", options: ["Aplicar materiales", "Generar repeticiones o deformaciones siguiendo un recorrido", "Convertir a SVG", "Renderizar más rápido"], correct: 1 },
+    { text: "Procedimiento correcto para generar modelo 3D con IA en Hunyuan 3D:", options: ["Subir STL y esperar reparación", "Cargar 4 imágenes desde distintos ángulos", "Dibujar manualmente", "Convertir fotos a PDF"], correct: 1 },
+    { text: "Emparejamiento correcto de software según prácticas:", options: ["Tinkercad – paramétrico avanzado", "AutoCAD – modelado 3D básico", "SolidWorks – modelado paramétrico avanzado", "Blender – solo animación"], correct: 2 },
+    { text: "Escaneo 3D: tamaño de piezas adecuado en el curso", options: ["Mayores a 1 metro", "Piezas pequeñas y medianas", "Microscópicas", "Mayores de 30 cm"], correct: 1 },
+    { text: "Formatos de archivo que genera el escaneo 3D:", options: ["STL y OBJ", "DOCX y PDF", "JPG y PNG", "MP4 y AVI"], correct: 0 },
+    { text: "¿Cuál NO es tecnología de impresión 3D?", options: ["SLA", "SLS", "FDM", "CNC"], correct: 3 },
+    { text: "Función de Cura en impresión 3D:", options: ["Diseñar modelos", "Convertir modelo 3D a G-code", "Pintar modelos", "Escanear objetos"], correct: 1 },
+    { text: "¿Es necesario configurar Cura para cada pieza?", options: ["No, siempre misma config", "Sí, cada modelo requiere parámetros adecuados", "Solo si impresora lo pide", "Solo cuando el archivo es STL"], correct: 1 },
+    { text: "Páginas para descargar modelos 3D (elige dos):", options: ["Thingiverse", "Netflix", "Cults3D", "Mercado Libre"], correct: [0,2], isMulti: true },
+    { text: "Diferencia principal entre Tinkercad y SolidWorks:", options: ["Tinkercad simple/principiantes, SolidWorks profesional/paramétrico", "SolidWorks solo en celulares", "Tinkercad no permite diseñar", "Son idénticos"], correct: 0 },
+    { text: "Parámetros básicos en Cura:", options: ["Altura capa, temperatura, relleno, velocidad, soportes", "Color, marca y tamaño del carrete", "Tipo impresora, idioma y contraseña", "Resolución, brillo y contraste"], correct: 0 },
+    { text: "Ventaja de Bambu Studio frente a Cura:", options: ["Mayor integración con impresoras Bambu y mejor optimización", "Permite ver películas", "Videojuegos incorporados", "No permite modificar parámetros"], correct: 0 },
+    { text: "Orden correcto para imprimir un llavero:", options: ["Descargar STL → Modificar Tinkercad → Laminar Cura → Exportar G-code → Imprimir", "Imprimir → Descargar → Laminar → Modificar", "Laminar → Modificar → Descargar → Imprimir", "Descargar STL → imprimir directamente"], correct: 0 }
+  ];
+
+  // Renderizar autoevaluación
+  function renderQuiz() {
+    const container = document.getElementById('quizContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    quizQuestions.forEach((q, idx) => {
+      const card = document.createElement('div');
+      card.className = 'quiz-card';
+      card.setAttribute('data-qid', idx);
+      const questionHtml = `<div class="quiz-question">${idx+1}. ${q.text}</div>`;
+      card.innerHTML = questionHtml;
+      q.options.forEach((opt, optIdx) => {
+        const optDiv = document.createElement('div');
+        optDiv.className = 'quiz-option';
+        optDiv.textContent = opt;
+        optDiv.addEventListener('click', () => handleQuizAnswer(card, q, optIdx));
+        card.appendChild(optDiv);
+      });
+      const feedbackDiv = document.createElement('div');
+      feedbackDiv.className = 'quiz-feedback';
+      feedbackDiv.id = `feedback-${idx}`;
+      card.appendChild(feedbackDiv);
+      container.appendChild(card);
+    });
+  }
+
+  function handleQuizAnswer(card, question, selectedIdx) {
+    const feedbackDiv = card.querySelector('.quiz-feedback');
+    // si ya fue respondida, no hacer nada para no sobreescribir
+    if (feedbackDiv.getAttribute('data-answered') === 'true') return;
+    let isCorrect = false;
+    if (question.isMulti) {
+      isCorrect = question.correct.includes(selectedIdx);
+    } else {
+      isCorrect = (selectedIdx === question.correct);
+    }
+    const correctAnswerText = question.isMulti ? 
+      question.correct.map(i => question.options[i]).join(' / ') : 
+      question.options[question.correct];
+    if (isCorrect) {
+      feedbackDiv.innerHTML = `<span class="correct-feedback">✅ Correcto. ${correctAnswerText}</span>`;
+    } else {
+      feedbackDiv.innerHTML = `<span class="wrong-feedback">❌ Incorrecto. Respuesta correcta: ${correctAnswerText}</span>`;
+    }
+    feedbackDiv.setAttribute('data-answered', 'true');
+    // deshabilitar opciones
+    card.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'none');
+  }
+
+  function resetQuiz() {
+    document.querySelectorAll('.quiz-card').forEach(card => {
+      const fb = card.querySelector('.quiz-feedback');
+      fb.innerHTML = '';
+      fb.removeAttribute('data-answered');
+      card.querySelectorAll('.quiz-option').forEach(opt => opt.style.pointerEvents = 'auto');
+    });
+  }
+
+  // ---------------------- FLASHCARDS (conceptos) ----------------------
+  const flashcardsData = [
+    { q: "¿Qué significa FDM?", a: "Fused Deposition Modeling (Modelado por deposición fundida)." },
+    { q: "Ventaja del formato .3mf sobre .stl", a: "Guarda perfiles, colores, múltiples objetos y soportes." },
+    { q: "Altura de capa equilibrada", a: "0.20 mm (200 micras)." },
+    { q: "Número mínimo de paredes", a: "3 paredes para evitar ghosting." },
+    { q: "Función del ventilador de capa", a: "Solidificar rápido el material, mejora voladizos." },
+    { q: "Problema principal de filamento húmedo", a: "Stringing (hilos), burbujas y mala adhesión." },
+    { q: "¿Para qué sirve la prueba de flujo?", a: "Ajustar la cantidad exacta de material." },
+    { q: "Soporte tipo árbol en Bambu Studio", a: "Support → Tree (Auto)." },
+    { q: "Velocidad volumétrica máxima", a: "Límite de mm³/s que el hotend puede fundir." },
+    { q: "Ángulo típico para soportes", a: "30° a 45° (reducir para más soporte)." }
+  ];
+  let currentFlashcards = [...flashcardsData];
+  function shuffleArray(arr) { for (let i = arr.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [arr[i], arr[j]] = [arr[j], arr[i]]; } return arr; }
+  function renderFlashcards() {
+    const container = document.getElementById('flashcardsContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    currentFlashcards.forEach(card => {
+      const flash = document.createElement('div');
+      flash.className = 'flashcard';
+      flash.innerHTML = `<div class="flip-card-inner"><div class="card-front"><i class="fas fa-question-circle"></i><h3>Pregunta</h3><p>${card.q}</p><span style="font-size:0.7rem;">🔍 toca respuesta</span></div><div class="card-back"><i class="fas fa-lightbulb" style="color:var(--green);"></i><h3>Respuesta</h3><p>${card.a}</p></div></div>`;
+      flash.addEventListener('click', () => flash.classList.toggle('flipped'));
+      container.appendChild(flash);
+    });
+  }
+  function shuffleFlashcards() { currentFlashcards = shuffleArray([...flashcardsData]); renderFlashcards(); }
+  function resetFlipState() { document.querySelectorAll('.flashcard').forEach(c => c.classList.remove('flipped')); }
+
+  // ---------------------- PDFs ----------------------
+  const pdfFiles = [
+    { name: "EVALUACIÓN MODELADO POLIGONAL 3D.pdf", display: "📄 Evaluación Modelado Poligonal 3D" },
+    { name: "EVALUACIÓN OPERACIÓN DE IMPRESORA 3D.pdf", display: "📄 Evaluación Operación Impresora 3D" },
+    { name: "Fabricación aditiva 3D bambu lab studio.pdf", display: "📘 Fabricación Aditiva - Bambu Lab Studio" },
+    { name: "Configuracion de cura (1).pdf", display: "⚙️ Configuración de Cura (básica y avanzada)" },
+    { name: "Optimización de Parámetros de Impresión 3D en Ultimaker Cura.pdf", display: "📈 Optimización Parámetros Ultimaker Cura" },
+    { name: "2 apunte teorico de impresión 3d introductorio.pdf", display: "📖 Apunte teórico - Introducción a impresión 3D" },
+    { name: "Cómo-diseñar-para-impresión-3D-ebook-de-Bitfab.pdf", display: "🎨 Cómo diseñar para impresión 3D (ebook)" },
+    { name: "manual de tinkercad e impresión 3d.pdf", display: "🟧 Manual de Tinkercad e impresión 3D" },
+    { name: "3d sequeira diego -guia-de-materiales-2023_compress.pdf", display: "🧪 Guía de materiales de impresión 3D 2023" },
+    { name: "guiadepruebasdeimpresion-3dsequeira diego.pdf", display: "🔬 Guía de pruebas de impresión 3D con Orca Slicer" }
+  ];
+  function renderPdfDownloads() {
+    const container = document.getElementById('pdfListContainer');
+    if (!container) return;
+    container.innerHTML = '';
+    pdfFiles.forEach(pdf => {
+      const item = document.createElement('div');
+      item.className = 'pdf-item';
+      item.innerHTML = `<div class="pdf-info"><i class="fas fa-file-pdf"></i><span class="pdf-name">${pdf.display}</span></div><button class="download-pdf-btn" data-filename="${pdf.name}"><i class="fas fa-download"></i> Descargar PDF</button>`;
+      container.appendChild(item);
+    });
+    document.querySelectorAll('.download-pdf-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filename = btn.getAttribute('data-filename');
+        const url = `assets/pdfs/${filename}`;
+        fetch(url).then(r => { if(!r.ok) throw new Error(); return r.blob(); })
+          .then(blob => { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = filename; a.click(); URL.revokeObjectURL(blob); })
+          .catch(() => alert(`❌ No se encontró el PDF en assets/pdfs/${filename}`));
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    renderFlashcards();
+    renderQuiz();
+    renderPdfDownloads();
+    document.getElementById('shuffleCardsBtn')?.addEventListener('click', shuffleFlashcards);
+    document.getElementById('resetCardsBtn')?.addEventListener('click', resetFlipState);
+    document.getElementById('resetQuizBtn')?.addEventListener('click', resetQuiz);
+  });
+</script>
+</body>
+</html>
